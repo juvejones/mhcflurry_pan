@@ -158,7 +158,7 @@ def load_dataframe(
     columns = set(df.keys())
 
     if allele_column_name is None:
-        for candidate in ["mhc", "allele", "hla"]:
+        for candidate in ["mhc", "allele", "hla", "Allele"]:
             if candidate in columns:
                 allele_column_name = candidate
                 break
@@ -168,7 +168,7 @@ def load_dataframe(
                     columns,))
 
     if peptide_column_name is None:
-        for candidate in ["sequence", "peptide", "peptide_sequence"]:
+        for candidate in ["sequence", "peptide", "peptide_sequence", "Peptide"]:
             if candidate in columns:
                 peptide_column_name = candidate
                 break
@@ -178,7 +178,7 @@ def load_dataframe(
                     columns,))
 
     if affinity_column_name is None:
-        for candidate in ["meas", "ic50", "affinity"]:
+        for candidate in ["meas", "ic50", "affinity", "Eluted"]:
             if candidate in columns:
                 affinity_column_name = candidate
                 break
