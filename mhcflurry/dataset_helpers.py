@@ -71,6 +71,7 @@ def prepare_pMHC_affinity_arrays(alleles, peptides, affinities, sample_weights=N
     """
     Converts every sequence to an array and if sample_weights is missing then
     create an array of ones.
+
     """
     alleles = np.asarray(alleles)
     peptides = np.asarray(peptides)
@@ -130,7 +131,8 @@ def load_dataframe(
         Default behavior is to try  {"sequence", "peptide", "peptide_sequence"}
 
     affinity_column_name : str, optional
-        Default behavior is to try {"meas", "ic50", "affinity", "aff"}
+        Include the input of binary elute data
+        Default behavior is to try {"meas", "ic50", "affinity", "aff", "Eluted"}
 
     filter_peptide_length : int, optional
         Which length peptides to use (default=load all lengths)

@@ -21,6 +21,8 @@ def ic50_to_regression_target(ic50, max_ic50=MAX_IC50):
     Transform IC50 inhibitory binding concentrations to affinity values between
     [0,1] where 0 means a value greater or equal to max_ic50 and 1 means very
     strong binder.
+    
+    For NP: convert the +/- sign into 1 and 0
 
     Parameters
     ----------
@@ -28,17 +30,20 @@ def ic50_to_regression_target(ic50, max_ic50=MAX_IC50):
 
     max_ic50 : float
     """
-    log_ic50 = np.log(ic50) / np.log(max_ic50)
-    regression_target = 1.0 - log_ic50
+    regression_target = ic50
+    #log_ic50 = np.log(ic50) / np.log(max_ic50)
+    #regression_target = 1.0 - log_ic50
     # clamp to values between 0, 1
-    regression_target = np.maximum(regression_target, 0.0)
-    regression_target = np.minimum(regression_target, 1.0)
+    #regression_target = np.maximum(regression_target, 0.0)
+    #regression_target = np.minimum(regression_target, 1.0)
     return regression_target
 
 def regression_target_to_ic50(y, max_ic50=MAX_IC50):
     """
     Transform values between [0,1] to IC50 inhibitory binding concentrations
     between [1.0, infinity]
+
+    For NP: do nothing since we only need the score
 
     Parameters
     ----------
@@ -48,4 +53,8 @@ def regression_target_to_ic50(y, max_ic50=MAX_IC50):
 
     Returns numpy.ndarray
     """
-    return max_ic50 ** (1.0 - y)
+    #######################
+    ## NP implementation ##
+    #######################
+    return y 
+    #return max_ic50 ** (1.0 - y)

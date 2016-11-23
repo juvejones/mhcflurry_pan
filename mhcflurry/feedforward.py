@@ -40,9 +40,11 @@ def make_network(
         batch_normalization=True,
         initial_embedding_weights=None,
         embedding_init_method="glorot_uniform",
-        model=None,
+        model=None,  
         optimizer="rmsprop",
-        loss="mse"):
+        ###loss="mse",
+        loss="binary_crossentropy" ### Use binary classification objective
+        ):
 
     if model is None:
         model = Sequential()

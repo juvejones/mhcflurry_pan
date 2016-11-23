@@ -58,8 +58,52 @@ def make_scores(
         tau = scipy.stats.kendalltau(ic50_y_pred, ic50_y)[0]
     except ValueError:
         tau = numpy.nan
+    try:
+        acc = sklearn.metrics.accuracy_score(
+            ic50_y <= threshold_nm,
+            y_pred <= threshold_nm,
+            sample_weight=sample_weight)
+    except ValueError:
+        acc = numpy.nan
 
     return dict(
         auc=auc,
+        acc=acc,
         f1=f1,
         tau=tau)
+
+def classification_report(
+        ic50_y,
+        ic50_y_pred,
+        sample_weight=None,
+        threshold = 0.9
+        ):
+    """
+    Return a text report showing the main classification metrics.
+
+    Parameters
+    -----------
+    ic50_y : float list
+        true IC50s (i.e. affinities)
+
+    ic50_y_pred : float list
+        predicted IC50s
+
+    sample_weight : float list [optional]
+
+    threshold : float [optional]
+
+    Returns
+    -----------
+    print the report table 
+    """
+    target_names = ['elute_negative', 'elute_positive']
+    try:
+        print sklearn.metrics.classification_report(
+            ic50_y <= threshold,
+            ic50_y_pred <= threshold,
+            target_names = target_names,
+            sample_weight=sample_weight)
+    except ValueError:
+        print "Cannot generate classification report"
+

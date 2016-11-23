@@ -378,6 +378,9 @@ class Dataset(object):
             allele_column_name: "allele",
             peptide_column_name: "peptide",
             affinity_column_name: "affinity"})
+        ###-------replace eluted column labels with 1/0 values-------###
+        df.replace(['+','-'], [1,0], inplace=True)
+        ###----------------------------------------------------------###
         return cls(df)
 
     def get_allele(self, allele_name):
