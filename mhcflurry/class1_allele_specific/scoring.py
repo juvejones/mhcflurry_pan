@@ -42,15 +42,15 @@ def make_scores(
         ic50_y_pred, max_ic50)
     try:
         auc = sklearn.metrics.roc_auc_score(
-            ic50_y <= threshold_nm,
+            ic50_y >= threshold_nm,
             y_pred,
             sample_weight=sample_weight)
     except ValueError:
         auc = numpy.nan
     try:
         f1 = sklearn.metrics.f1_score(
-            ic50_y <= threshold_nm,
-            ic50_y_pred <= threshold_nm,
+            ic50_y >= threshold_nm,
+            ic50_y_pred >= threshold_nm,
             sample_weight=sample_weight)
     except ValueError:
         f1 = numpy.nan
@@ -60,8 +60,8 @@ def make_scores(
         tau = numpy.nan
     try:
         acc = sklearn.metrics.accuracy_score(
-            ic50_y <= threshold_nm,
-            y_pred <= threshold_nm,
+            ic50_y >= threshold_nm,
+            y_pred >= threshold_nm,
             sample_weight=sample_weight)
     except ValueError:
         acc = numpy.nan
@@ -97,13 +97,13 @@ def classification_report(
     -----------
     print the report table 
     """
-    target_names = ['elute_negative', 'elute_positive']
+    labels = [0, 1]
     try:
-        print sklearn.metrics.classification_report(
-            ic50_y <= threshold,
-            ic50_y_pred <= threshold,
-            target_names = target_names,
-            sample_weight=sample_weight)
+        print(sklearn.metrics.classification_report(
+            ic50_y >= threshold,
+            ic50_y_pred >= threshold,
+            labels = labels,
+            sample_weight=sample_weight))
     except ValueError:
-        print "Cannot generate classification report"
+        print("Cannot generate classification report")
 
