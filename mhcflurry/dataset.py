@@ -379,7 +379,7 @@ class Dataset(object):
             peptide_column_name: "peptide",
             affinity_column_name: "affinity"})
         ###-------replace eluted column labels with 1/0 values-------###
-        df.replace(['+','-'], [1,0], inplace=True)
+        df.replace(['+','-'], [0,1], inplace=True)
         ###----------------------------------------------------------###
         return cls(df)
 

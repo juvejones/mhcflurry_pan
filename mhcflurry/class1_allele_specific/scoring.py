@@ -14,7 +14,7 @@ def make_scores(
         ic50_y,
         ic50_y_pred,
         sample_weight=None,
-        threshold_nm=500,
+        threshold_nm=0.5,
         max_ic50=50000):
     """
     Calculate AUC, F1, and Kendall Tau scores.
@@ -76,18 +76,18 @@ def classification_report(
         ic50_y,
         ic50_y_pred,
         sample_weight=None,
-        threshold = 0.9
+        threshold = 0.5
         ):
     """
     Return a text report showing the main classification metrics.
 
     Parameters
     -----------
-    ic50_y : float list
-        true IC50s (i.e. affinities)
+    ic50_y : int list
+        elution property (i.e. true/false)
 
     ic50_y_pred : float list
-        predicted IC50s
+        predicted elution property
 
     sample_weight : float list [optional]
 
