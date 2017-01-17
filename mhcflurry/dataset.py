@@ -383,6 +383,34 @@ class Dataset(object):
         ###----------------------------------------------------------###
         return cls(df)
 
+    @classmethod
+    def from_sql(
+    	    cls,
+    	    allele=None, 
+    	    engine=None):
+        """
+        Get Dataset from HLA-peptidome.db
+        """
+        ## query data from db
+        query_string = 'SELECT peptide, unique_allele FROM ElutionArray \
+            WHERE unique_allele == ?'
+        df_pos = pd.read_sql_query(query_string, engine, params=[str(allele)])
+        df_pos['affinity'] = 1
+        df_pos['sample_weight'] = 1
+        query_string = 'SELECT peptide, unique_allele FROM ElutionArray \
+            WHERE unique_allele != ?'
+        df_neg = pd.read_sql_query(query_string, engine, params=[str(allele)])
+        df_neg['unique_allele'] = str(allele)
+        df_neg['affinity'] = 0
+        ## assign random (0,0.5) sample weight to negative points
+        df_neg['sample_weight'] = np.random.rand(len(df_neg['peptide']))
+        ## concat dataframe and finalize
+        frame = [df_pos, df_neg]
+        df = pd.concat(frame)
+        df = df.rename(columns={'unique_allele': "allele"})
+        
+        return cls(df)
+
     def get_allele(self, allele_name):
         """
         Get Dataset for a single allele

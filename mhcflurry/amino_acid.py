@@ -114,7 +114,7 @@ common_amino_acids = Alphabet(**{
     "T": "Threonine",
     "W": "Tryptophan",
     "Y": "Tyrosine",
-    "V": "Valine",
+    "V": "Valine"
 })
 common_amino_acid_letters = common_amino_acids.letters()
 
