@@ -390,6 +390,7 @@ class Dataset(object):
     	    engine=None):
         """
         Get Dataset from HLA-peptidome.db
+        Assign negative sample with random weight 
         """
         ## query data from db
         query_string = 'SELECT peptide, unique_allele FROM ElutionArray \
