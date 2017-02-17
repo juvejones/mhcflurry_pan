@@ -379,7 +379,7 @@ class Dataset(object):
             peptide_column_name: "peptide",
             affinity_column_name: "affinity"})
         ###-------replace eluted column labels with 1/0 values-------###
-        df.replace(['+','-'], [0,1], inplace=True)
+        df.replace(['+','-'], [1,0], inplace=True)
         ###----------------------------------------------------------###
         return cls(df)
 
@@ -409,8 +409,8 @@ class Dataset(object):
         ## draw negative subset
         subset = int(neg_frac * len(df_pos['peptide']))
         df_neg = df_neg.sample(n=subset)
-        ## assign random (0,0.2) sample weight to negative points
-        df_neg['sample_weight'] = np.random.rand(subset)/5
+        ## assign random (0,1) sample weight to negative points
+        df_neg['sample_weight'] = np.random.rand(subset)/1
         ## concat dataframe and finalize
         frame = [df_pos, df_neg]
         df = pd.concat(frame)
