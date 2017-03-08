@@ -98,7 +98,8 @@ class Class1BindingPredictor(Class1AlleleSpecificKmerIC50PredictorBase):
         if model is None:
             model = make_embedding_network(
                 peptide_length=kmer_size,
-                n_amino_acids=n_amino_acids + int(allow_unknown_amino_acids),
+                ##allow both 'X' and ' ' types of unknown aa##
+                n_amino_acids=n_amino_acids + 2*int(allow_unknown_amino_acids),
                 **self.network_hyperparameter_defaults.subselect(
                     effective_hyperparameters))
         elif specified_network_hyperparameters:
