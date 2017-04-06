@@ -396,17 +396,24 @@ class Dataset(object):
         Assign negative sample with random weight 
         """
         ## query data from db
-        query_string = 'SELECT peptide, unique_allele FROM ElutionArray \
+        query_string = 'SELECT peptide, unique_allele, MS_score FROM ElutionArray \
             WHERE unique_allele == ?'
+        ##query_string = 'SELECT peptide, unique_allele FROM ElutionArray \
+        ##    WHERE unique_allele == ?'
         df_pos = pd.read_sql_query(query_string, engine, params=[str(allele)])
-        df_pos['affinity'] = 1
+        #df_pos['affinity'] = 1
+        ## rename MS_score column to affinity column
+        df_pos.rename(columns = {'MS_score':'affinity'}, inplace = True)
+        df_pos['affinity'].fillna(0.9, axis = 0, inplace = True)
         df_pos['sample_weight'] = 1
         ## use randome allele data as negative sample
-        #query_string = 'SELECT peptide, unique_allele FROM ElutionArray \
-        #    WHERE unique_allele == ?'
         df_neg = pd.read_sql_query(query_string, engine, params=["RD"])
         df_neg['unique_allele'] = str(allele)
-        df_neg['affinity'] = 0
+        ##df_neg['affinity'] = 0
+        df_neg.rename(columns = {'MS_score':'affinity'}, inplace = True)
+        ## in db negative samples have score of 1, change to 0 to represent affinity
+        df_neg.replace(to_replace={'affinity': {1: 0}}, inplace=True)
+        df_neg['affinity'].fillna(0, axis = 0, inplace = True)
         ## draw negative subset
         subset = int(neg_frac * len(df_pos['peptide']))
         df_neg = df_neg.sample(n=subset)
