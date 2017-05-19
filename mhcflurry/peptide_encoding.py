@@ -306,7 +306,7 @@ def check_valid_index_encoding_array(X, allow_unknown_amino_acids=True):
         if len(X.shape) != 2:
             raise ValueError("Expected 2d input, got array with shape %s" % (
                 X.shape,))
-        max_expected_index = 21 if allow_unknown_amino_acids else 19
+        max_expected_index = 22 if allow_unknown_amino_acids else 19
         #max_expected_index = 20 if allow_unknown_amino_acids else 19
         if X.max() > max_expected_index:
             raise ValueError(
