@@ -72,6 +72,8 @@ class Alphabet(object):
         index_dict = self.index_dict()
         for i, peptide in enumerate(peptides):
             for j, amino_acid in enumerate(peptide):
+                if not amino_acid in index_dict.keys():
+                    amino_acid = "X"
                 X[i, j] = index_dict[amino_acid]
         return X
 
@@ -89,7 +91,9 @@ class Alphabet(object):
         X = np.zeros(shape, dtype=bool)
         for i, peptide in enumerate(peptides):
             for j, amino_acid in enumerate(peptide):
-                k = index_dict[amino_acid]
+                if not amino_acid in index_dict.keys():
+                    amino_acid = "X"
+                k = index_dict[amino_acid]               
                 X[i, j, k] = 1
         return X
 
