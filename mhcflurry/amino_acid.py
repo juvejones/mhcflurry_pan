@@ -75,6 +75,7 @@ class Alphabet(object):
                 if not amino_acid in index_dict.keys():
                     amino_acid = "X"
                 X[i, j] = index_dict[amino_acid]
+        assert X.shape[1] == 43, "input length not correct: %d" % (X.shape[1])
         return X
 
     def hotshot_encoding(

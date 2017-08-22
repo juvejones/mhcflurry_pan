@@ -115,7 +115,7 @@ def make_network(
 
 
 def make_hotshot_network(
-        peptide_length=9,
+        peptide_length=43,
         n_amino_acids=20,
         **kwargs):
     """
@@ -127,7 +127,7 @@ def make_hotshot_network(
 
 
 def make_embedding_network(
-        peptide_length=9,
+        peptide_length=43,
         n_amino_acids=20,
         embedding_output_dim=20,
         **kwargs):
