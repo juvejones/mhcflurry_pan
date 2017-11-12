@@ -13,7 +13,7 @@
 # limitations under the License.
 
 """
-Pan-allele MHC Class I Elution Predictor
+Pan-allele MHC Class I Binding Predictor
 MHC is encoded from the pseudo-sequences by NetMHCpan
 Total input length is 43 (peptide 9 + MHC 34)
 """
