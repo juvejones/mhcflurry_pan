@@ -14,15 +14,16 @@ module load miniconda3/4.3.3
 source activate tensorflow
 ```
 
-Then setup $LD_LIBRARY_PATH:
+Then setup $LD_LIBRARY_PATH and run Python:
 
 ```shell
-LD_LIBRARY_PATH=/home/zhaoweil/bin/lib64:/home/zhaoweil/bin/usr/lib64/ /home/zhaoweil/bin/lib64/ld-2.18.so
+LD_LIBRARY_PATH=/home/zhaoweil/bin/lib64:/home/zhaoweil/bin/usr/lib64/ /home/zhaoweil/bin/lib64/ld-2.18.so `which python`
 ```
 
-Now invoke Python and you should see corrected version loading: 
-```shell
-`which python`
+Now you should see the correct version of Python loaded:
+
+```
+Python 2.7.15 |Anaconda, Inc.| (default, May  1 2018, 23:32:55)
 ```
 
 ## Making predictions using pre-trained model in Python
@@ -30,16 +31,29 @@ Now invoke Python and you should see corrected version loading:
 ```python
 import tensorflow as tf
 import mhcflurry
-from mhcflurry import 
+from mhcflurry import Class1BindingPredictor
+from mhcflurry.class1_allele_specific.load import Class1AlleleSpecificPredictorLoader
+modelsDir = "/work/genomics/tools/mhcnptep/mhcnptep/database/"
+
+# Load NP prediction model
+loader_np = Class1AlleleSpecificPredictorLoader(modelsDir+"NP-models/allele_specific_trained_models/")
+
+# Load Tepi prediction model
+loader_t = Class1AlleleSpecificPredictorLoader(modelsDir+"Tepi-modelsallele_specific_trained_models_tepi/")
+
+# Predict a ninemer using loaded models
+model = loader_np.from_allele_name("A0201")
+prediction = model.predict([''])
 ```
 
-
+The predictions returned by `predict` are (0,1) probability score of naturally presented or TCR reactive.
 
 ## Making predictions for a batch using command-line 
 
-```python
-from mhcflurry import predict
-predict(alleles=['A0201'], peptides=['SIINFEKL'])
+After ```source activate tensorflow```, instead of invoking Python environment, using a written pipeline script to call predictions
+
+```shell
+LD_LIBRARY_PATH=/home/zhaoweil/bin/lib64:/home/zhaoweil/bin/usr/lib64/ /home/zhaoweil/bin/lib64/ld-2.18.so `which python` -i predict.py
 ```
 
 ```
@@ -47,9 +61,11 @@ predict(alleles=['A0201'], peptides=['SIINFEKL'])
 0  A0201  SIINFEKL  10672.347656
 ```
 
-The predictions returned by `predict` are affinities (KD) in nM.
+
 
 ## Training your own models
+
+#### ADD Jupyter notebook here
 
 See the [class1_allele_specific_models.ipynb](https://github.com/hammerlab/mhcflurry/blob/master/examples/class1_allele_specific_models.ipynb) notebook for an overview of the Python API, including predicting, fitting, and scoring models.
 
@@ -77,5 +93,5 @@ open "$(mhcflurry-downloads path models_class1_allele_specific_single)/cv.csv"
 
 ## Versioning
 
-## Authors
+## Author
 Weilong Zhao, weilong.zhao@merck.com
