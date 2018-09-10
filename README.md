@@ -36,19 +36,21 @@ from mhcflurry.class1_allele_specific.load import Class1AlleleSpecificPredictorL
 modelsDir = "/work/genomics/tools/mhcnptep/mhcnptep/database/"
 
 # Load NP prediction model
-loader_np = Class1AlleleSpecificPredictorLoader(modelsDir+"NP-models/allele_specific_trained_models/")
+loader_np = Class1AlleleSpecificPredictorLoader(modelsDir+"NP-models/")
 
 # Load Tepi prediction model
-loader_t = Class1AlleleSpecificPredictorLoader(modelsDir+"Tepi-modelsallele_specific_trained_models_tepi/")
+loader_t = Class1AlleleSpecificPredictorLoader(modelsDir+"Tepi-models/")
 
 # Predict a ninemer using loaded models
-model = loader_np.from_allele_name("A0201")
-prediction = model.predict([''])
+model = loader_np.from_allele_name("$YOUR_ALLELE")
+prediction = model.predict(["$YOUR_PEPTIDE"])
+prediction
+array([$PREDICTED_VALUE], dtype=float32)
 ```
 
 The predictions returned by `predict` are (0,1) probability score of naturally presented or TCR reactive.
 
-## Making predictions for a batch using command-line 
+## Making predictions for a batch using command-line script
 
 After ```source activate tensorflow```, instead of invoking Python environment, using a written pipeline script to call predictions
 
@@ -56,9 +58,9 @@ After ```source activate tensorflow```, instead of invoking Python environment, 
 LD_LIBRARY_PATH=/home/zhaoweil/bin/lib64:/home/zhaoweil/bin/usr/lib64/ /home/zhaoweil/bin/lib64/ld-2.18.so `which python` -i predict.py
 ```
 
-```
-  Allele   Peptide  Prediction
-0  A0201  SIINFEKL  10672.347656
+The ```predict.py``` script takes input format of neoantigen output file ()
+```python
+
 ```
 
 
