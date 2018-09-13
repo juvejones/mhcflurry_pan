@@ -58,10 +58,13 @@ After ```source activate tensorflow```, instead of invoking Python environment, 
 LD_LIBRARY_PATH=/home/zhaoweil/bin/lib64:/home/zhaoweil/bin/usr/lib64/ /home/zhaoweil/bin/lib64/ld-2.18.so `which python` -i predict.py
 ```
 
-The ```predict.py``` script takes input format of neoantigen output file ()
-```python
-
+The ```predict.py``` script takes input of annotated 9-mer neopeptide file `/$BATCH/$OUT/neoI_II/$SAMPLE.9.pep`:
+```shell
+$ python predict.py
+usage: predict.py [-h] --sample_file SAMPLE_FILE --batch BATCH --date
+                       DATE --output OUTPUT [--logs LOGS]
 ```
+
 
 
 
@@ -69,15 +72,15 @@ The ```predict.py``` script takes input format of neoantigen output file ()
 
 #### ADD Jupyter notebook here
 
-See the [class1_allele_specific_models.ipynb](https://github.com/hammerlab/mhcflurry/blob/master/examples/class1_allele_specific_models.ipynb) notebook for an overview of the Python API, including predicting, fitting, and scoring models.
+/*See the [class1_allele_specific_models.ipynb](https://github.com/hammerlab/mhcflurry/blob/master/examples/class1_allele_specific_models.ipynb) notebook for an overview of the Python API, including predicting, fitting, and scoring models.
 
-There is also a script called `mhcflurry-class1-allele-specific-cv-and-train` that will perform cross validation and model selection given a CSV file of training data. Try `mhcflurry-class1-allele-specific-cv-and-train --help` for details.
+/*There is also a script called `mhcflurry-class1-allele-specific-cv-and-train` that will perform cross validation and model selection given a CSV file of training data. Try `mhcflurry-class1-allele-specific-cv-and-train --help` for details.
 
 ## Details on the downloaded class I allele-specific models
 
-Besides the actual model weights, the data downloaded with `mhcflurry-downloads fetch` also includes a CSV file giving the hyperparameters used for each predictor. Another CSV gives the cross validation results used to select these hyperparameters.
+/*Besides the actual model weights, the data downloaded with `mhcflurry-downloads fetch` also includes a CSV file giving the hyperparameters used for each predictor. Another CSV gives the cross validation results used to select these hyperparameters.
 
-To see the hyperparameters for the production models, run:
+/*To see the hyperparameters for the production models, run:
 
 ```
 open "$(mhcflurry-downloads path models_class1_allele_specific_single)/production.csv"
