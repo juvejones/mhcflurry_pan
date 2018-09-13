@@ -55,7 +55,7 @@ The predictions returned by `predict` are (0,1) probability score of naturally p
 After ```source activate tensorflow```, instead of invoking Python environment, using a written pipeline script to call predictions
 
 ```shell
-LD_LIBRARY_PATH=/home/zhaoweil/bin/lib64:/home/zhaoweil/bin/usr/lib64/ /home/zhaoweil/bin/lib64/ld-2.18.so `which python` -i predict.py
+LD_LIBRARY_PATH=/home/zhaoweil/bin/lib64:/home/zhaoweil/bin/usr/lib64/ /home/zhaoweil/bin/lib64/ld-2.18.so `which python` -i predict.py -s /work/clinical/MK1308.PN001.PID21597.AID1303/analysis/batch.6.20180726/match0726 -b /work/clinical/MK1308.PN001.PID21597.AID1303/analysis/batch.6.20180726/ -d 0726 -o /work/genomics/tools/mhcnptep/run-scripts/batch_test/
 ```
 
 The ```predict.py``` script takes input of annotated 9-mer neopeptide file `/$BATCH/$OUT/neoI_II/$SAMPLE.9.pep`:
