@@ -59,38 +59,36 @@ source deactivate
 ##### Alternatively, run with a command-line script for single peptide prediction:
 
 ```shell
-LD_LIBRARY_PATH=/work/genomics/tools/tensorflowLib/lib64:/work/genomics/tools/tensorflowLib/usr/lib64/ /work/genomics/tools/tensorflowLib/lib64/ld-2.18.so `which python` -i predict_singlePep.py \
+LD_LIBRARY_PATH=/work/genomics/tools/tensorflowLib/lib64:/work/genomics/tools/tensorflowLib/usr/lib64/ /work/genomics/tools/tensorflowLib/lib64/ld-2.18.so `which python` /work/genomics/tools/mhcnptep/run-scripts/predict_singlePep.py \
 
 -a "A0201" -p "FLGGTTVCL"
 
 source deactivate
 ```
 
-
 ## Making predictions for a batch using command-line script
 
 After ```source activate tensorflow```, instead of invoking Python environment, using a written pipeline script to call predictions
 
 ```shell
-LD_LIBRARY_PATH=/work/genomics/tools/tensorflowLib/lib64:/work/genomics/tools/tensorflowLib/usr/lib64/ /work/genomics/tools/tensorflowLib/lib64/ld-2.18.so `which python` -i predict_batch.py \
+LD_LIBRARY_PATH=/work/genomics/tools/tensorflowLib/lib64:/work/genomics/tools/tensorflowLib/usr/lib64/ /work/genomics/tools/tensorflowLib/lib64/ld-2.18.so `which python` /work/genomics/tools/mhcnptep/run-scripts/predict_batch.py \
 
 -s /work/clinical/MK1308.PN001.PID21597.AID1303/analysis/batch.6.20180726/match0726 \
 
--b /work/clinical/MK1308.PN001.PID21597.AID1303/analysis/batch.6.20180726/ \
+-op /work/clinical/MK1308.PN001.PID21597.AID1303/analysis/batch.6.20180726/out0726/optitype/ \
 
--d 0726 -o /work/genomics/tools/mhcnptep/run-scripts/batch_test/
+-n /work/clinical/MK1308.PN001.PID21597.AID1303/analysis/batch.6.20180726/out0726/neoI_II/ \
+
+-o /work/clinical/MK1308.PN001.PID21597.AID1303/analysis/batch.6.20180726/out0726/neoIGS/
 ```
 
 The ```predict_batch.py``` script takes input of annotated 9-mer neopeptide file `/$BATCH/$OUT/neoI_II/$SAMPLE.9.pep`:
 
 ```shell
 $ python predict_batch.py
-usage: predict_batch.py [-h] --sample_file SAMPLE_FILE --batch BATCH --date
-                       DATE --output OUTPUT [--logs LOGS]
+usage: predict_batch.py [-h] --sample_file SAMPLE_FILE --optitype OPTITYPE
+                        --neo NEO --output OUTPUT [--logs LOGS]
 ```
-
-
-
 
 ## Training your own models (TODO)
 
