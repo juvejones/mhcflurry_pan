@@ -17,7 +17,7 @@ source activate tensorflow
 Then setup $LD_LIBRARY_PATH and run Python:
 
 ```shell
-LD_LIBRARY_PATH=/home/zhaoweil/bin/lib64:/home/zhaoweil/bin/usr/lib64/ /home/zhaoweil/bin/lib64/ld-2.18.so `which python`
+LD_LIBRARY_PATH=/work/genomics/tools/tensorflowLib/lib64:/work/genomics/tools/tensorflowLib/usr/lib64/ /work/genomics/tools/tensorflowLib/lib64/ld-2.18.so `which python`
 ```
 
 Now you should see the correct version of Python loaded:
@@ -50,20 +50,29 @@ array([$PREDICTED_VALUE], dtype=float32)
 
 The predictions returned by `predict` are (0,1) probability score of naturally presented or TCR reactive.
 
-#### Alternatively, run with a command-line script for single peptide prediction:
+Exit tensorflow/mhcflurry conda environment after job done:
 
 ```shell
-LD_LIBRARY_PATH=/home/zhaoweil/bin/lib64:/home/zhaoweil/bin/usr/lib64/ /home/zhaoweil/bin/lib64/ld-2.18.so `which python` -i predict_singlePep.py \
+source deactivate
+```
+
+##### Alternatively, run with a command-line script for single peptide prediction:
+
+```shell
+LD_LIBRARY_PATH=/work/genomics/tools/tensorflowLib/lib64:/work/genomics/tools/tensorflowLib/usr/lib64/ /work/genomics/tools/tensorflowLib/lib64/ld-2.18.so `which python` -i predict_singlePep.py \
 
 -a "A0201" -p "FLGGTTVCL"
+
+source deactivate
 ```
+
 
 ## Making predictions for a batch using command-line script
 
 After ```source activate tensorflow```, instead of invoking Python environment, using a written pipeline script to call predictions
 
 ```shell
-LD_LIBRARY_PATH=/home/zhaoweil/bin/lib64:/home/zhaoweil/bin/usr/lib64/ /home/zhaoweil/bin/lib64/ld-2.18.so `which python` -i predict_batch.py \
+LD_LIBRARY_PATH=/work/genomics/tools/tensorflowLib/lib64:/work/genomics/tools/tensorflowLib/usr/lib64/ /work/genomics/tools/tensorflowLib/lib64/ld-2.18.so `which python` -i predict_batch.py \
 
 -s /work/clinical/MK1308.PN001.PID21597.AID1303/analysis/batch.6.20180726/match0726 \
 
@@ -83,7 +92,7 @@ usage: predict_batch.py [-h] --sample_file SAMPLE_FILE --batch BATCH --date
 
 
 
-## Training your own models
+## Training your own models (TODO)
 
 #### ADD Jupyter notebook here
 
@@ -91,7 +100,7 @@ usage: predict_batch.py [-h] --sample_file SAMPLE_FILE --batch BATCH --date
 
 /*There is also a script called `mhcflurry-class1-allele-specific-cv-and-train` that will perform cross validation and model selection given a CSV file of training data. Try `mhcflurry-class1-allele-specific-cv-and-train --help` for details.
 
-## Details on the downloaded class I allele-specific models
+## Details on the downloaded class I allele-specific models (TODO)
 
 /*Besides the actual model weights, the data downloaded with `mhcflurry-downloads fetch` also includes a CSV file giving the hyperparameters used for each predictor. Another CSV gives the cross validation results used to select these hyperparameters.
 
@@ -107,9 +116,8 @@ To see the cross validation results:
 /*open "$(mhcflurry-downloads path models_class1_allele_specific_single)/cv.csv"
 /*```
 
-## Environment variables
 
-## Integration with Master neoantigen pipeline
+## Integration with Master neoantigen pipeline (TODO)
 
 ## Versioning
 
