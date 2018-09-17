@@ -50,12 +50,20 @@ array([$PREDICTED_VALUE], dtype=float32)
 
 The predictions returned by `predict` are (0,1) probability score of naturally presented or TCR reactive.
 
+#### Alternatively, run with a command-line script for single peptide prediction:
+
+```shell
+LD_LIBRARY_PATH=/home/zhaoweil/bin/lib64:/home/zhaoweil/bin/usr/lib64/ /home/zhaoweil/bin/lib64/ld-2.18.so `which python` -i predict_singlePep.py \
+
+-a "A0201" -p "FLGGTTVCL"
+```
+
 ## Making predictions for a batch using command-line script
 
 After ```source activate tensorflow```, instead of invoking Python environment, using a written pipeline script to call predictions
 
 ```shell
-LD_LIBRARY_PATH=/home/zhaoweil/bin/lib64:/home/zhaoweil/bin/usr/lib64/ /home/zhaoweil/bin/lib64/ld-2.18.so `which python` -i predict.py \
+LD_LIBRARY_PATH=/home/zhaoweil/bin/lib64:/home/zhaoweil/bin/usr/lib64/ /home/zhaoweil/bin/lib64/ld-2.18.so `which python` -i predict_batch.py \
 
 -s /work/clinical/MK1308.PN001.PID21597.AID1303/analysis/batch.6.20180726/match0726 \
 
@@ -64,10 +72,11 @@ LD_LIBRARY_PATH=/home/zhaoweil/bin/lib64:/home/zhaoweil/bin/usr/lib64/ /home/zha
 -d 0726 -o /work/genomics/tools/mhcnptep/run-scripts/batch_test/
 ```
 
-The ```predict.py``` script takes input of annotated 9-mer neopeptide file `/$BATCH/$OUT/neoI_II/$SAMPLE.9.pep`:
+The ```predict_batch.py``` script takes input of annotated 9-mer neopeptide file `/$BATCH/$OUT/neoI_II/$SAMPLE.9.pep`:
+
 ```shell
-$ python predict.py
-usage: predict.py [-h] --sample_file SAMPLE_FILE --batch BATCH --date
+$ python predict_batch.py
+usage: predict_batch.py [-h] --sample_file SAMPLE_FILE --batch BATCH --date
                        DATE --output OUTPUT [--logs LOGS]
 ```
 
@@ -88,15 +97,15 @@ usage: predict.py [-h] --sample_file SAMPLE_FILE --batch BATCH --date
 
 /*To see the hyperparameters for the production models, run:
 
-```
-open "$(mhcflurry-downloads path models_class1_allele_specific_single)/production.csv"
-```
+/*```
+/*open "$(mhcflurry-downloads path models_class1_allele_specific_single)/production.csv"
+/*```
 
 To see the cross validation results:
 
-```
-open "$(mhcflurry-downloads path models_class1_allele_specific_single)/cv.csv"
-```
+/*```
+/*open "$(mhcflurry-downloads path models_class1_allele_specific_single)/cv.csv"
+/*```
 
 ## Environment variables
 
