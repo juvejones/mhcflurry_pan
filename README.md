@@ -1,123 +1,67 @@
-[![Build Status](https://travis-ci.org/hammerlab/mhcflurry.svg?branch=master)](https://travis-ci.org/hammerlab/mhcflurry) [![Coverage Status](https://coveralls.io/repos/github/hammerlab/mhcflurry/badge.svg?branch=master)](https://coveralls.io/github/hammerlab/mhcflurry?branch=master)
+[![Build Status](https://travis-ci.org/openvax/mhcflurry.svg?branch=master)](https://travis-ci.org/openvax/mhcflurry)
 
-# MHCnptep
-MHCNPTEP is a tool developed based on open source neural network models for peptide-MHC binding affinity prediction by [Hammerbacher lab](). It combines the predictions for naturally processed and T-cell reactive neoepitopes.
-The predictors are implemented in Python using [keras](https://keras.io).
+# mhcflurry
+[MHC I](https://en.wikipedia.org/wiki/MHC_class_I) ligand
+prediction package with competitive accuracy and a fast and 
+[documented](http://openvax.github.io/mhcflurry/) implementation.
 
-## Getting started
+MHCflurry supports Class I peptide/MHC binding affinity prediction using
+ensembles of allele-specific models. It runs on Python 2.7 and 3.4+ using
+the [keras](https://keras.io) neural network library. It exposes [command-line](http://openvax.github.io/mhcflurry/commandline_tutorial.html)
+and [Python library](http://openvax.github.io/mhcflurry/python_tutorial.html) interfaces.
 
-The package is installed on CTC as a Python module within conda tensorfow environment. To activate the environment:
+If you find MHCflurry useful in your research please cite:
 
-```shell
-module purge
-module load miniconda3/4.3.3
-source activate tensorflow
-```
+> T. J. O’Donnell, A. Rubinsteyn, M. Bonsack, A. B. Riemer, U. Laserson, and J. Hammerbacher, "MHCflurry: Open-Source Class I MHC Binding Affinity Prediction," *Cell Systems*, 2018. Available at: https://www.cell.com/cell-systems/fulltext/S2405-4712(18)30232-1.
 
-Then setup $LD_LIBRARY_PATH and run Python:
+## Installation (pip)
 
-```shell
-LD_LIBRARY_PATH=/work/genomics/tools/tensorflowLib/lib64:/work/genomics/tools/tensorflowLib/usr/lib64/ /work/genomics/tools/tensorflowLib/lib64/ld-2.18.so `which python`
-```
-
-Now you should see the correct version of Python loaded:
+Install the package:
 
 ```
-Python 2.7.15 |Anaconda, Inc.| (default, May  1 2018, 23:32:55)
+$ pip install mhcflurry
 ```
 
-## Making predictions using pre-trained model in Python
+Then download our datasets and trained models:
 
-```python
-import tensorflow as tf
-import mhcflurry
-from mhcflurry import Class1BindingPredictor
-from mhcflurry.class1_allele_specific.load import Class1AlleleSpecificPredictorLoader
-modelsDir = "/work/genomics/tools/mhcnptep/mhcnptep/database/"
-
-# Load NP prediction model
-loader_np = Class1AlleleSpecificPredictorLoader(modelsDir+"NP-models/")
-
-# Load Tepi prediction model
-loader_t = Class1AlleleSpecificPredictorLoader(modelsDir+"Tepi-models/")
-
-# Predict a ninemer using loaded models
-model = loader_np.from_allele_name("$YOUR_ALLELE")
-prediction = model.predict(["$YOUR_PEPTIDE"])
-prediction
-array([$PREDICTED_VALUE], dtype=float32)
+```
+$ mhcflurry-downloads fetch
 ```
 
-The predictions returned by `predict` are (0,1) probability score of naturally presented or TCR reactive.
+You can now generate predictions:
 
-Exit tensorflow/mhcflurry conda environment after job done:
-
-```shell
-source deactivate
+```
+$ mhcflurry-predict \
+       --alleles HLA-A0201 HLA-A0301 \
+       --peptides SIINFEKL SIINFEKD SIINFEKQ \
+       --out /tmp/predictions.csv
+       
+Wrote: /tmp/predictions.csv
 ```
 
-##### Alternatively, run with a command-line script for single peptide prediction:
+See the [documentation](http://openvax.github.io/mhcflurry/) for more details.
 
-```shell
-LD_LIBRARY_PATH=/work/genomics/tools/tensorflowLib/lib64:/work/genomics/tools/tensorflowLib/usr/lib64/ /work/genomics/tools/tensorflowLib/lib64/ld-2.18.so `which python` /work/genomics/tools/mhcnptep/run-scripts/predict_singlePep.py \
+## MHCflurry model variants and mass spec 
 
--a "A0201" -p "FLGGTTVCL"
+The default MHCflurry models are trained
+on affinity measurements. Mass spec datasets are incorporated only in
+the model selection step. We also release experimental predictors whose training data directly
+includes mass spec. To download these predictors, run:
 
-source deactivate
+```
+$ mhcflurry-downloads fetch models_class1_trained_with_mass_spec
 ```
 
-## Making predictions for a batch using command-line script
+and then to make them used by default:
 
-After ```source activate tensorflow```, instead of invoking Python environment, using a written pipeline script to call predictions
-
-```shell
-LD_LIBRARY_PATH=/work/genomics/tools/tensorflowLib/lib64:/work/genomics/tools/tensorflowLib/usr/lib64/ /work/genomics/tools/tensorflowLib/lib64/ld-2.18.so `which python` /work/genomics/tools/mhcnptep/run-scripts/predict_batch.py \
-
--s /work/clinical/MK1308.PN001.PID21597.AID1303/analysis/batch.6.20180726/match0726 \
-
--op /work/clinical/MK1308.PN001.PID21597.AID1303/analysis/batch.6.20180726/out0726/optitype/ \
-
--n /work/clinical/MK1308.PN001.PID21597.AID1303/analysis/batch.6.20180726/out0726/neoI_II/ \
-
--o /work/clinical/MK1308.PN001.PID21597.AID1303/analysis/batch.6.20180726/out0726/neoIGS/
+```
+$ export MHCFLURRY_DEFAULT_CLASS1_MODELS="$(mhcflurry-downloads path models_class1_trained_with_mass_spec)/models"
 ```
 
-The ```predict_batch.py``` script takes input of annotated 9-mer neopeptide file `/$BATCH/$OUT/neoI_II/$SAMPLE.9.pep`:
+We also release predictors that do not use mass spec datasets at all. To use
+these predictors, run:
 
-```shell
-$ python predict_batch.py
-usage: predict_batch.py [-h] --sample_file SAMPLE_FILE --optitype OPTITYPE
-                        --neo NEO --output OUTPUT [--logs LOGS]
 ```
-
-## Training your own models (TODO)
-
-#### ADD Jupyter notebook here
-
-/*See the [class1_allele_specific_models.ipynb](https://github.com/hammerlab/mhcflurry/blob/master/examples/class1_allele_specific_models.ipynb) notebook for an overview of the Python API, including predicting, fitting, and scoring models.
-
-/*There is also a script called `mhcflurry-class1-allele-specific-cv-and-train` that will perform cross validation and model selection given a CSV file of training data. Try `mhcflurry-class1-allele-specific-cv-and-train --help` for details.
-
-## Details on the downloaded class I allele-specific models (TODO)
-
-/*Besides the actual model weights, the data downloaded with `mhcflurry-downloads fetch` also includes a CSV file giving the hyperparameters used for each predictor. Another CSV gives the cross validation results used to select these hyperparameters.
-
-/*To see the hyperparameters for the production models, run:
-
-/*```
-/*open "$(mhcflurry-downloads path models_class1_allele_specific_single)/production.csv"
-/*```
-
-To see the cross validation results:
-
-/*```
-/*open "$(mhcflurry-downloads path models_class1_allele_specific_single)/cv.csv"
-/*```
-
-
-## Integration with Master neoantigen pipeline (TODO)
-
-## Versioning
-
-## Author
-Weilong Zhao, weilong.zhao@merck.com
+$ mhcflurry-downloads fetch models_class1_selected_no_mass_spec
+export MHCFLURRY_DEFAULT_CLASS1_MODELS="$(mhcflurry-downloads path models_class1_selected_no_mass_spec)/models"
+```
