@@ -13,7 +13,9 @@
 # limitations under the License.
 
 """
-Allele specific MHC Class I binding affinity predictor
+Pan-allele MHC Class I Binding Predictor
+MHC is encoded from the pseudo-sequences by NetMHCpan
+Total input length is 43 (peptide 9 + MHC 34)
 """
 from __future__ import (
     print_function,
@@ -29,8 +31,8 @@ import numpy as np
 import keras.models
 
 from ..feedforward import make_embedding_network
-from .class1_allele_specific_kmer_ic50_predictor_base import (
-    Class1AlleleSpecificKmerIC50PredictorBase,
+from .class1_panallele_kmer_ic50_predictor_base import (
+    Class1PanAlleleKmerIC50PredictorBase,
 )
 from ..peptide_encoding import check_valid_index_encoding_array
 from ..regression_target import MAX_IC50, ic50_to_regression_target
@@ -42,7 +44,7 @@ from ..regression_target import regression_target_to_ic50
 from ..hyperparameters import HyperparameterDefaults
 
 
-class Class1BindingPredictor(Class1AlleleSpecificKmerIC50PredictorBase):
+class Class1BindingPredictor(Class1PanAlleleKmerIC50PredictorBase):
     """
     Allele-specific Class I MHC binding predictor which uses
     fixed-length (k-mer) index encoding for inputs and outputs
@@ -67,7 +69,7 @@ class Class1BindingPredictor(Class1AlleleSpecificKmerIC50PredictorBase):
         batch_normalization=True)
 
     hyperparameter_defaults = (
-        Class1AlleleSpecificKmerIC50PredictorBase.hyperparameter_defaults
+        Class1PanAlleleKmerIC50PredictorBase.hyperparameter_defaults
         .extend(network_hyperparameter_defaults)
         .extend(fit_hyperparameter_defaults))
 
@@ -77,11 +79,12 @@ class Class1BindingPredictor(Class1AlleleSpecificKmerIC50PredictorBase):
             name=None,
             max_ic50=MAX_IC50,
             allow_unknown_amino_acids=True,
-            kmer_size=9,
+            kmer_size=43,
+            #kmer_size=9,
             n_amino_acids=20,
             verbose=False,
             **hyperparameters):
-        Class1AlleleSpecificKmerIC50PredictorBase.__init__(
+        Class1PanAlleleKmerIC50PredictorBase.__init__(
             self,
             name=name,
             max_ic50=max_ic50,
@@ -98,7 +101,9 @@ class Class1BindingPredictor(Class1AlleleSpecificKmerIC50PredictorBase):
         if model is None:
             model = make_embedding_network(
                 peptide_length=kmer_size,
-                n_amino_acids=n_amino_acids + int(allow_unknown_amino_acids),
+                ##allow three types of unknown aa##
+                ##NEED TO REMOVE HARD CODING##
+                n_amino_acids=n_amino_acids + 3*int(allow_unknown_amino_acids),
                 **self.network_hyperparameter_defaults.subselect(
                     effective_hyperparameters))
         elif specified_network_hyperparameters:

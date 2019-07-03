@@ -203,6 +203,8 @@ def train_and_test_one_model_one_fold(
         n_random_negative_samples=int(fraction_negative * len(train_dataset)))
     fit_time += time.time()
 
+    print("Training model=%s_Time consumed=%s" % (model_description, fit_time))
+    
     result = {
         'fit_time': fit_time,
         'fit_host': socket.gethostname(),

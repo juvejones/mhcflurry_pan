@@ -16,7 +16,7 @@ from collections import OrderedDict
 
 import pandas as pd
 
-from .class1_allele_specific import load
+from .class1_panallele import load
 from .common import normalize_allele_name, UnsupportedAllele
 
 
@@ -33,7 +33,7 @@ def predict(alleles, peptides, loaders=None):
     peptides : list of str
         Peptide amino acid sequences.
 
-    loaders : list of Class1AlleleSpecificPredictorLoader, optional
+    loaders : list of Class1PanAllelePredictorLoader, optional
         Loaders to try. Will be tried in the order given.
 
     Returns DataFrame with columns "Allele", "Peptide", and "Prediction"

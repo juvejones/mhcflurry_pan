@@ -40,9 +40,11 @@ def make_network(
         batch_normalization=True,
         initial_embedding_weights=None,
         embedding_init_method="glorot_uniform",
-        model=None,
+        model=None,  
         optimizer="rmsprop",
-        loss="mse"):
+        ###loss="mse",
+        loss="binary_crossentropy" ### Use binary classification objective
+        ):
 
     if model is None:
         model = Sequential()
@@ -113,7 +115,7 @@ def make_network(
 
 
 def make_hotshot_network(
-        peptide_length=9,
+        peptide_length=43,
         n_amino_acids=20,
         **kwargs):
     """
@@ -125,7 +127,7 @@ def make_hotshot_network(
 
 
 def make_embedding_network(
-        peptide_length=9,
+        peptide_length=43,
         n_amino_acids=20,
         embedding_output_dim=20,
         **kwargs):

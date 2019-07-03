@@ -71,6 +71,7 @@ def prepare_pMHC_affinity_arrays(alleles, peptides, affinities, sample_weights=N
     """
     Converts every sequence to an array and if sample_weights is missing then
     create an array of ones.
+
     """
     alleles = np.asarray(alleles)
     peptides = np.asarray(peptides)
@@ -130,7 +131,8 @@ def load_dataframe(
         Default behavior is to try  {"sequence", "peptide", "peptide_sequence"}
 
     affinity_column_name : str, optional
-        Default behavior is to try {"meas", "ic50", "affinity", "aff"}
+        Include the input of binary elute data
+        Default behavior is to try {"meas", "ic50", "affinity", "aff", "Eluted"}
 
     filter_peptide_length : int, optional
         Which length peptides to use (default=load all lengths)
@@ -158,7 +160,7 @@ def load_dataframe(
     columns = set(df.keys())
 
     if allele_column_name is None:
-        for candidate in ["mhc", "allele", "hla"]:
+        for candidate in ["mhc", "allele", "hla", "Allele"]:
             if candidate in columns:
                 allele_column_name = candidate
                 break
@@ -168,7 +170,7 @@ def load_dataframe(
                     columns,))
 
     if peptide_column_name is None:
-        for candidate in ["sequence", "peptide", "peptide_sequence"]:
+        for candidate in ["sequence", "peptide", "peptide_sequence", "Peptide"]:
             if candidate in columns:
                 peptide_column_name = candidate
                 break
@@ -178,7 +180,7 @@ def load_dataframe(
                     columns,))
 
     if affinity_column_name is None:
-        for candidate in ["meas", "ic50", "affinity"]:
+        for candidate in ["meas", "ic50", "affinity", "Eluted"]:
             if candidate in columns:
                 affinity_column_name = candidate
                 break

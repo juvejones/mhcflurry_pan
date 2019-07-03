@@ -32,14 +32,14 @@ from ..ic50_predictor_base import IC50PredictorBase
 from ..hyperparameters import HyperparameterDefaults
 
 
-class Class1AlleleSpecificKmerIC50PredictorBase(IC50PredictorBase):
+class Class1PanAlleleKmerIC50PredictorBase(IC50PredictorBase):
     """
     Base class for all mhcflurry predictors which used fixed-length
     k-mer representation of peptides and don't require scanning over
     a longer sequence to find a binding core (like you might for Class II).
     """
     hyperparameter_defaults = (HyperparameterDefaults(
-        kmer_size=9)
+        kmer_size=43)
         .extend(IC50PredictorBase.hyperparameter_defaults))
 
     def __init__(

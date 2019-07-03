@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .class1_allele_specific.class1_binding_predictor import (
+from .class1_panallele.class1_binding_predictor import (
     Class1BindingPredictor)
 from .predict import predict
 from .package_metadata import __version__

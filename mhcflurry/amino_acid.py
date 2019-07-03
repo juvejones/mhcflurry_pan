@@ -72,7 +72,10 @@ class Alphabet(object):
         index_dict = self.index_dict()
         for i, peptide in enumerate(peptides):
             for j, amino_acid in enumerate(peptide):
+                if not amino_acid in index_dict.keys():
+                    amino_acid = "X"
                 X[i, j] = index_dict[amino_acid]
+        assert X.shape[1] == 43, "input length not correct: %d" % (X.shape[1])
         return X
 
     def hotshot_encoding(
@@ -89,7 +92,9 @@ class Alphabet(object):
         X = np.zeros(shape, dtype=bool)
         for i, peptide in enumerate(peptides):
             for j, amino_acid in enumerate(peptide):
-                k = index_dict[amino_acid]
+                if not amino_acid in index_dict.keys():
+                    amino_acid = "X"
+                k = index_dict[amino_acid]               
                 X[i, j, k] = 1
         return X
 
@@ -114,10 +119,12 @@ common_amino_acids = Alphabet(**{
     "T": "Threonine",
     "W": "Tryptophan",
     "Y": "Tyrosine",
-    "V": "Valine",
+    "V": "Valine"
 })
 common_amino_acid_letters = common_amino_acids.letters()
 
 amino_acids_with_unknown = common_amino_acids.copy()
 amino_acids_with_unknown.add("X", "Unknown")
+amino_acids_with_unknown.add(" ", "Unknown")
+amino_acids_with_unknown.add("#", "Unknown")
 amino_acids_with_unknown_letters = amino_acids_with_unknown.letters()
